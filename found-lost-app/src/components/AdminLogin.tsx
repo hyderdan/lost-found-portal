@@ -115,11 +115,11 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
 
                     {/* Demo credentials info */}
                     <div className="demo-info">
-                        <p className="demo-text">
+                        {/* <p className="demo-text">
                             <strong>Demo credentials:</strong><br />
                             Admin ID: admin<br />
                             Password: admin123
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </div>
