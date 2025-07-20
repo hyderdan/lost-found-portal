@@ -1,12 +1,12 @@
-.card {
-  background-color: #ffffff;
+.I-card {
+  max-width: 380px;  /* background-color: #e00505; */
   border-radius: 0.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
   overflow: hidden;
 }
 
-.card:hover {
+.I-card:hover {
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -54,11 +54,11 @@
   color: #166534;
 }
 
-.card-content {
+.I-card-content {
   padding: 1rem;
 }
 
-.card-title {
+.I-card-title {
   font-size: 1.125rem;
   font-weight: 600;
   color: #111827;
@@ -66,16 +66,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  text-align: left;
 }
 
-.card-description {
+.I-card-description {
   color: #4b5563;
   font-size: 0.875rem;
   margin-bottom: 0.75rem;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
+  text-align: left;
 }
 
 .card-details {

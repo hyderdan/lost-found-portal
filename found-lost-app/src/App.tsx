@@ -10,26 +10,28 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Viewdetails from './pages/Viewdetails'
 import Admin from './pages/Admin'
+import Pagetransition from './components/Pagetransition'
 // import ScrollToTop from './hooks/ScrollTop'
 
 function App() {
 
   return (
     <BrowserRouter>
-        {/* <ScrollToTop/> */}
+      {/* <ScrollToTop/> */}
       <div className='min-h-screen '>
-          <Navigation/>
+        <Navigation />
+        <Pagetransition>
           <Routes>
-          <Route path='/' element={<Home/>} />
-          <Route path='/Dashboard' element={<Dashboard />} />
-          <Route path='/searchItems' element = {<Search />} />
-          <Route path='/postItem' element={<PostItem />} />
-         <Route path='/login' element={<Login/>} />
-         <Route path='/viewDetails/:id' element={<Viewdetails />} />
-         <Route path='/register' element={<Register />} />
-         <Route path='/admin' element={<Admin />} />
-
-        </Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/Dashboard' element={<Dashboard />} />
+            <Route path='/searchItems' element={<Search />} />
+            <Route path='/postItem' element={<PostItem />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/viewDetails/:id' element={<Viewdetails />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/admin' element={<Admin />} />
+          </Routes>
+        </Pagetransition>
       </div>
     </BrowserRouter>
 

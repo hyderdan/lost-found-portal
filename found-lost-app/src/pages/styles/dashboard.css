@@ -70,13 +70,13 @@
 .icon-bg.purple { background-color: #ede9fe; }
 .icon-bg.orange { background-color: #ffedd5; }
 
-.icon {
+.d-icon {
   width: 24px;
   height: 24px;
 }
 
-.icon.small { width: 20px; height: 20px; margin-right: 0.75rem; }
-.icon.tiny { width: 16px; height: 16px; margin-right: 0.25rem; color: #9ca3af; }
+.d-icon.small { width: 20px; height: 20px; margin-right: 0.75rem; }
+.d-icon.tiny { width: 16px; height: 16px; margin-right: 0.25rem; color: #9ca3af; }
 
 .actions-card {
   background-color: white;
