@@ -61,7 +61,7 @@ const Dashboard = () => {
                                 <p className="stats-value">{userStats.totalPOst}</p>
                             </div>
                             <div className="icon-bg blue">
-                                <Eye className="icon" />
+                                <Eye className="d-icon" />
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ const Dashboard = () => {
                                 <p className="stats-value green">{userStats.activePosts}</p>
                             </div>
                             <div className="icon-bg green">
-                                <Search className="icon" />
+                                <Search className="d-icon" />
                             </div>
                         </div>
                     </div>
@@ -83,7 +83,7 @@ const Dashboard = () => {
                                 <p className="stats-value purple">{userStats.resolvesd}</p>
                             </div>
                             <div className="icon-bg purple">
-                                <Plus className="icon" />
+                                <Plus className="d-icon" />
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@ const Dashboard = () => {
                                 <p className="stats-value orange">{userStats.messages}</p>
                             </div>
                             <div className="icon-bg orange">
-                                <MessageCircle className="icon" />
+                                <MessageCircle className="d-icon" />
                             </div>
                         </div>
                     </div>
@@ -105,14 +105,14 @@ const Dashboard = () => {
                     <h2 className="actions-title">Quick Actions</h2>
                     <div className="actions-grid">
                         <Link to="/postItem" className="Dash-action-button blue-btn">
-                            <Plus className="icon small" />
+                            <Plus className="d-icon small" />
                             <div>
                                 <h3 className="action-label">Post New Item</h3>
                                 <p className="action-desc">Report a lost or found item</p>
                             </div>
                         </Link>
                         <Link to="/searchItems" className="Dash-action-button green-btn">
-                            <Search className="icon small" />
+                            <Search className="d-icon small" />
                             <div>
                                 <h3 className="action-label">Search Items</h3>
                                 <p className="action-desc">Browse lost and found items</p>
@@ -151,15 +151,15 @@ const Dashboard = () => {
                                         <td>{post.location}</td>
                                         <td>
                                             <div className="engagement">
-                                                <span><Eye className="icon tiny" />{post.views}</span>
-                                                <span><MessageCircle className="icon tiny" />{post.messages}</span>
+                                                <span><Eye className="d-icon tiny" />{post.views}</span>
+                                                <span><MessageCircle className="d-icon tiny" />{post.messages}</span>
                                             </div>
                                         </td>
                                         <td>
                                             <div className="actions-buttons">
-                                                <button className="action-icon blue"><Eye className="icon tiny" /></button>
-                                                <button className="action-icon green"><Edit className="icon tiny" /></button>
-                                                <button className="action-icon red"><Trash2 className="icon tiny" /></button>
+                                                <button className="action-icon blue"><Eye className="d-icon tiny" /></button>
+                                                <button className="action-icon green"><Edit className="d-icon tiny" /></button>
+                                                <button className="action-icon red"><Trash2 className="d-icon tiny" /></button>
                                             </div>
                                         </td>
                                     </tr>

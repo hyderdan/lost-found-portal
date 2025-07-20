@@ -16,7 +16,7 @@ interface ItemCardProps {
 const Itemcard = ({ id, title, description, location, date, category, status, imageUrl }: ItemCardProps) => {
 
     return (
-        <div className="card">
+        <div className="I-card">
             <div className="card-image-container">
                 {imageUrl ? (
                     <img src={imageUrl} alt={title} className="card-image" />
@@ -30,9 +30,9 @@ const Itemcard = ({ id, title, description, location, date, category, status, im
                 </div>
             </div>
 
-            <div className="card-content">
-                <h3 className="card-title">{title}</h3>
-                <p className="card-description">{description}</p>
+            <div className="I-card-content">
+                <h3 className="I-card-title">{title}</h3>
+                <p className="I-card-description">{description}</p>
 
                 <div className="card-details">
                     <div className="card-detail-item">
