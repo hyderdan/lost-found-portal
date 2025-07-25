@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-import { Search, Plus, Users, TrendingUp, Heart, Shield, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Plus, Users, TrendingUp, Heart, Shield, MapPin, ChevronLeft, ChevronRight, Icon } from 'lucide-react';
 import "./styles/Home.css"
 import Itemcard from "../components/Itemcard";
 
@@ -17,8 +17,8 @@ const Home = () => {
             bgColor: "bg-blue-600 bg-blue-700 to-blue-800",
             icon: Search,
             buttons: [
-                { text: "Search Items", icon: Search, to: "/search", variant: "white" },
-                { text: "Post an Item", icon: Plus, to: "/post-item", variant: "blue" }
+                { text: "Search Items", icon: Search, to: "/searchItems", variant: "white" },
+                { text: "Post an Item", icon: Plus, to: "/postItem", variant: "blue" }
             ]
         },
         {
@@ -29,7 +29,7 @@ const Home = () => {
             icon: Heart,
             buttons: [
                 { text: "Join Community", icon: Users, to: "/register", variant: "white" },
-                { text: "Browse Items", icon: Search, to: "/search", variant: "purple" }
+                { text: "Browse Items", icon: Search, to: "/searchItems", variant: "purple" }
             ]
         },
         {
@@ -39,7 +39,7 @@ const Home = () => {
             bgColor: "bg-green-600 via-emerald-700 to-teal-800",
             icon: Shield,
             buttons: [
-                { text: "Report Found Item", icon: Plus, to: "/post-item", variant: "white" },
+                { text: "Report Found Item", icon: Plus, to: "/postItem", variant: "white" },
                 { text: "Search by Location", icon: MapPin, to: "/search", variant: "green" }
             ]
         }
@@ -49,7 +49,7 @@ const Home = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-        }, 5000);
+        }, 4000);
 
         return () => clearInterval(interval);
     }, [heroSlides.length]);
@@ -127,7 +127,7 @@ const Home = () => {
                                     <div className="text-center">
                                         {slide.icon && (
                                             <div className="icon-wrapper">
-                                                <slide.icon className="icon " />
+                                                <slide.icon className="icon" />
                                             </div>
                                         )}
                                         <h1 className="slide-title">{slide.title}</h1>
@@ -137,6 +137,7 @@ const Home = () => {
                                                 <Link key={index} to={button.to}
                                                     className={getButtonClasses(button.variant)}
                                                 >
+                                                    <button.icon className="button-icon" />
                                                     <button className="button-icon text-white" />
                                                     {button.text}
                                                 </Link>
@@ -208,7 +209,7 @@ const Home = () => {
                 <h2 className="h-section-title">Recent Activity</h2>
 
                 <div className="h-reported-items-section">
-                        {/* <h3 className="reported-items-title">Recently Reported Items</h3> */}
+                    {/* <h3 className="reported-items-title">Recently Reported Items</h3> */}
                     <div className="h-items-grid">
                         {recentItems.map((item) => (
                             <Itemcard key={item.id} {...item} />
