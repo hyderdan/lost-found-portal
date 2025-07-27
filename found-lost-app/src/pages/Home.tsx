@@ -1,12 +1,47 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from "react-router-dom";
-import { Search, Plus, Users, TrendingUp, Heart, Shield, MapPin, ChevronLeft, ChevronRight, Icon } from 'lucide-react';
+import { Search, Plus, Users, TrendingUp, Heart, Shield, MapPin, ChevronLeft, ChevronRight } from 'lucide-react';
 import "./styles/Home.css"
 import Itemcard from "../components/Itemcard";
+import Floatingbar from '../components/Floatingbar';
 
+
+const useScrollAnimation = (threshold = 0.1) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    // Once visible, we can disconnect to improve performance
+                    observer.disconnect();
+                }
+            },
+            {
+                threshold,
+                rootMargin: '50px'
+            }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => observer.disconnect();
+    }, [threshold]);
+
+    return { ref, isVisible };
+};
 
 
 const Home = () => {
+
+    const statsAnimation = useScrollAnimation(0.2);
+    const recentItemsAnimation = useScrollAnimation(0.2);
+    const howItWorksAnimation = useScrollAnimation(0.2);
+
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const heroSlides = [
@@ -138,7 +173,6 @@ const Home = () => {
                                                     className={getButtonClasses(button.variant)}
                                                 >
                                                     <button.icon className="button-icon" />
-                                                    <button className="button-icon text-white" />
                                                     {button.text}
                                                 </Link>
                                             ))}
@@ -172,7 +206,11 @@ const Home = () => {
             </div>
 
             {/* stats-section */}
-            <div className='stats-section'>
+            <div ref={statsAnimation.ref}
+                className={`h-stats-section ${statsAnimation.isVisible
+                    ? 'opacity-100 translate-y-0'
+                    : 'opacity-0 translate-y-10'
+                    }`}>
                 <div className='h-stats-grid'>
 
                     <div className='h-stats-card bg-white-50'>
@@ -205,7 +243,10 @@ const Home = () => {
 
 
             {/* recent-section */}
-            <div className='recent-section'>
+            <div
+                ref={recentItemsAnimation.ref}
+                className={`h-recent-section ${recentItemsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+            >
                 <h2 className="h-section-title">Recent Activity</h2>
 
                 <div className="h-reported-items-section">
@@ -229,7 +270,8 @@ const Home = () => {
             {/* recent-section */}
 
 
-            <div className="how-section">
+            <div ref={howItWorksAnimation.ref}
+                className={`h-how-section ${howItWorksAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="how-container">
                     <h2 className="section-title">How It Works</h2>
                     <div className="how-grid">
@@ -251,7 +293,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-
+            <Floatingbar />
         </div>
 
     )
