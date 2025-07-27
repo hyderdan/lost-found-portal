@@ -46,7 +46,7 @@ const PostItem = () => {
     };
 
     return (
-        <div className="page-container">
+        <div className="p-page-container">
                     <ScrollToTop/>
             <div className="form-container">
                 {/* Header */}
@@ -55,7 +55,7 @@ const PostItem = () => {
                     <p className="header-description">Help build our community by reporting lost or found items</p>
                 </div>
 
-                <div className="form-card">
+                <div className="p-form-card">
                     {/* Item Type Toggle */}
                     <div className="toggle-container">
                         <div className="toggle-buttons">

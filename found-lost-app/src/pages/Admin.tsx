@@ -130,7 +130,7 @@ const Admin = () => {
     };
 
     return (
-        <div className="page-container">
+        <div className="a-page-container">
             <div className="content-container">
                 {/* Header */}
                 <div className="header">

@@ -44,8 +44,8 @@ const AdminLogin = ({ onLoginSuccess }: AdminLoginProps) => {
     };
 
     return (
-        <div className="page-container">
-            <div className="card">
+        <div className="al-page-container">
+            <div className="al-card">
                 <div className="card-header">
                     <div className="header-icon-container">
                         <Shield className="header-icon" />

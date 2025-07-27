@@ -1,24 +1,26 @@
-.page-container {
+.p-page-container {
+  width: 100%;
   min-height: 100vh;
-  background-color: #f9fafb;
+  background-color: #white;
 }
 
 .form-container {
-  max-width: 896px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
   padding: 2rem 1rem;
 }
 
 @media (min-width: 640px) {
-  .form-container {
+  
+  .p-form-container {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .form-container {
+  .p-form-container {
     padding-left: 2rem;
     padding-right: 2rem;
   }
@@ -39,7 +41,7 @@
   color: #4b5563;
 }
 
-.form-card {
+.p-form-card {
   background-color: #ffffff;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -51,6 +53,7 @@
 }
 
 .toggle-buttons {
+  width: 100%;
   display: flex;
   gap: 0.25rem;
   background-color: #f3f4f6;
