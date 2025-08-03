@@ -1,157 +1,132 @@
-import React, { useState, useEffect } from 'react';
-import { Star, X, Users, Quote, MessageCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { MessageSquare, X, Star, Send } from 'lucide-react';
 
 const Floatingbar = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [currentReview, setCurrentReview] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
+  const [name, setName] = useState('');
+  const [review, setReview] = useState('');
 
-  const reviews = [
-    {
-      text: "Found my lost keys within hours of posting! This community is amazing.",
-      author: "Sarah M.",
-      rating: 5,
-      avatar: "👩‍💼"
-    },
-    {
-      text: "Helped reunite someone with their wallet. Great platform for good deeds!",
-      author: "Mike R.",
-      rating: 5,
-      avatar: "👨‍💻"
-    },
-    {
-      text: "Lost my phone at the park and got it back the same day. Incredible!",
-      author: "Elena K.",
-      rating: 5,
-      avatar: "👩‍🎓"
-    }
-  ];
-
-  // Show the bar after a delay
-  useEffect(() => {
-    if (!isCollapsed) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isCollapsed]);
-
-  // Auto-rotate reviews
-  useEffect(() => {
-    if (isVisible && !isCollapsed) {
-      const interval = setInterval(() => {
-        setCurrentReview((prev) => (prev + 1) % reviews.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [isVisible, isCollapsed, reviews.length]);
-
-  const handleCollapse = () => {
-    setIsVisible(false);
-    setTimeout(() => setIsCollapsed(true), 300);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle review submission here
+    console.log('Review submitted:', { name, review, rating });
+    // Reset form
+    setName('');
+    setReview('');
+    setRating(0);
+    setIsExpanded(false);
   };
 
-  const handleExpand = () => {
-    setIsCollapsed(false);
-    setIsVisible(true);
-  };
-  return (
-    <>
-      {/* Main floating review bar */}
-      <div
-        className={`fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 ease-out ${
-          isVisible && !isCollapsed
-            ? 'opacity-100 translate-y-0' 
-            : 'opacity-0 translate-y-4 pointer-events-none'
-        }`}
-      >
-        <div className="bg-card border border-border rounded-lg shadow-lg backdrop-blur-sm max-w-md mx-auto">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center space-x-3 flex-1">
-              <div className="flex-shrink-0">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Quote className="h-5 w-5 text-primary" />
-                </div>
-              </div>
-              
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-1 mb-1">
-                  {[...Array(reviews[currentReview].rating)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-                
-                <p className="text-sm text-foreground font-medium leading-tight">
-                  {reviews[currentReview].text}
-                </p>
-                
-                <div className="flex items-center mt-2 space-x-2">
-                  <span className="text-lg">{reviews[currentReview].avatar}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {reviews[currentReview].author}
-                  </span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center space-x-2 ml-3">
-              <div className="flex items-center space-x-1 text-xs text-muted-foreground">
-                <Users className="h-3 w-3" />
-                <span>3.4k+</span>
-              </div>
-              
-              <button
-                onClick={handleCollapse}
-                className="text-muted-foreground hover:text-foreground transition-colors p-1 hover:bg-muted rounded"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
-          
-          {/* Progress indicator */}
-          <div className="flex space-x-1 px-4 pb-3">
-            {reviews.map((_, index) => (
-              <div
-                key={index}
-                className={`h-1 flex-1 rounded-full transition-colors duration-300 ${
-                  index === currentReview ? 'bg-primary' : 'bg-muted'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Collapsed side button */}
-      <div
-        className={`fixed right-6 bottom-6 z-50 transition-all duration-300 ease-out ${
-          isCollapsed
-            ? 'opacity-100 translate-x-0' 
-            : 'opacity-0 translate-x-4 pointer-events-none'
-        }`}
-      >
+  const renderStars = () => {
+    return Array.from({ length: 5 }, (_, index) => {
+      const starNumber = index + 1;
+      return (
         <button
-          onClick={handleExpand}
-          className="bg-card border border-border rounded-full p-3 shadow-lg backdrop-blur-sm hover:shadow-xl transition-all duration-200 group"
+          key={starNumber}
+          type="button"
+          onClick={() => setRating(starNumber)}
+          onMouseEnter={() => setHoveredRating(starNumber)}
+          onMouseLeave={() => setHoveredRating(0)}
+          className="text-2xl transition-colors duration-200 focus:outline-none"
         >
-          <div className="flex items-center space-x-2">
-            <MessageCircle className="h-5 w-5 text-primary" />
-            <div className="flex space-x-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
-          </div>
-          
-          {/* Tooltip */}
-          <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-popover text-popover-foreground px-2 py-1 rounded text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-            View reviews
-          </div>
+          <Star
+            className={`h-6 w-6 ${
+              starNumber <= (hoveredRating || rating)
+                ? 'fill-yellow-400 text-yellow-400'
+                : 'text-gray-300'
+            }`}
+          />
+        </button>
+      );
+    });
+  };
+
+  if (!isExpanded) {
+    return (
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          onClick={() => setIsExpanded(true)}
+          className="rounded-full h-14 w-14 bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 flex items-center justify-center"
+          aria-label="Open review form"
+        >
+          <MessageSquare className="h-6 w-6" />
         </button>
       </div>
-    </>
+    );
+  }
+return (
+    <div className="fixed bottom-6 right-6 z-50 animate-scale-in">
+      <div className="w-80 bg-white rounded-lg shadow-xl border border-gray-200">
+        <div className="p-4 pb-3 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-900">
+              <MessageSquare className="h-5 w-5 text-blue-600" />
+              Write a Review
+            </h3>
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="h-8 w-8 p-0 rounded-md hover:bg-gray-100 flex items-center justify-center transition-colors"
+              aria-label="Close review form"
+            >
+              <X className="h-4 w-4 text-gray-500" />
+            </button>
+          </div>
+        </div>
+        
+        <div className="p-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="name" className="text-sm font-medium text-gray-700 mb-1 block">
+                Your Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full h-9 px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Rating
+              </label>
+              <div className="flex gap-1">
+                {renderStars()}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="review" className="text-sm font-medium text-gray-700 mb-1 block">
+                Your Review
+              </label>
+              <textarea
+                id="review"
+                placeholder="Share your experience with our lost & found service..."
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+                required
+                className="w-full min-h-[80px] px-3 py-2 border border-gray-300 rounded-md text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+
+            <button 
+              type="submit" 
+              disabled={!name || !review || rating === 0}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-md font-medium transition-colors"
+            >
+              <Send className="h-4 w-4" />
+              Submit Review
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -41,14 +41,13 @@ const Login = () => {
                                 Email Address
                             </label>
                             <div className="input-container">
-                                <Mail className="input-icon" />
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    placeholder="Enter your email"
+                                    placeholder="📧 Enter your email"
                                     className="form-input"
                                     required
                                 />
@@ -61,14 +60,13 @@ const Login = () => {
                                 Password
                             </label>
                             <div className="input-container">
-                                <Lock className="input-icon" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     id="password"
                                     name="password"
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    placeholder="Enter your password"
+                                    placeholder="🔒 Enter your password"
                                     className="form-input password-input"
                                     required
                                 />

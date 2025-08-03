@@ -49,7 +49,7 @@ const Home = () => {
             id: 1,
             title: "Find What You've Lost",
             subtitle: "Connect with your community to recover lost items and help others find theirs. Your virtual lost & found portal.",
-            bgColor: "bg-blue-600 bg-blue-700 to-blue-800",
+            bgImage: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1920&h=1080&fit=crop",
             icon: Search,
             buttons: [
                 { text: "Search Items", icon: Search, to: "/searchItems", variant: "white" },
@@ -60,8 +60,7 @@ const Home = () => {
             id: 2,
             title: "Join Our Community",
             subtitle: "Over 3,456 helpful community members helping each other reunite with lost belongings every day.",
-            bgColor: "bg-purple-600 via-purple-700 to-indigo-800",
-            icon: Heart,
+            bgImage: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1920&h=1080&fit=crop", icon: Heart,
             buttons: [
                 { text: "Join Community", icon: Users, to: "/register", variant: "white" },
                 { text: "Browse Items", icon: Search, to: "/searchItems", variant: "purple" }
@@ -71,7 +70,7 @@ const Home = () => {
             id: 3,
             title: "Safe & Secure",
             subtitle: "Your privacy and safety are our priority. Secure messaging and verified locations for peace of mind.",
-            bgColor: "bg-green-600 via-emerald-700 to-teal-800",
+            bgImage: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1920&h=1080&fit=crop",
             icon: Shield,
             buttons: [
                 { text: "Report Found Item", icon: Plus, to: "/postItem", variant: "white" },
@@ -157,7 +156,8 @@ const Home = () => {
                 >
                     {heroSlides.map((slide) => (
                         <div key={slide.id} className="carousel-slide">
-                            <div className={`slide-background ${slide.bgColor}`}>
+                            <div className={`slide-background bg-cover bg-center bg-no-repeat`}
+                              style={{ backgroundImage: `url(${slide.bgImage})` }}>
                                 <div className="slide-content">
                                     <div className="text-center">
                                         {slide.icon && (
