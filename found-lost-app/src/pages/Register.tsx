@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios"; // Ensure this is imported at the top
 import { Link } from 'react-router-dom';
 import { UserPlus, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
 // import { Input } from '@/components/ui/input';
@@ -188,12 +189,14 @@ const Register = () => {
         setIsSubmitting(true);
 
         try {
-            console.log('Register submitted:', formData);
-
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1000));
-
-            toast.success("Registration Successful! Your account has been  registered.");
+            const PostingData = {
+                Fullname: formData.fullName,
+                email: formData.email,
+                PhoneNo: formData.phone,
+                password: formData.password
+            };
+            const response = await axios.post('http://localhost:3000/register/signUp', PostingData);
+            toast.success("Registration Successful! Your account has been registered.", response.data.message);
             // Reset form
             setFormData({
                 fullName: '',
@@ -238,7 +241,7 @@ const Register = () => {
                                     value={formData.fullName}
                                     onChange={(e) => handleInputChange('fullName', e.target.value)}
                                     onBlur={() => handleBlur('fullName')}
-                                    placeholder="Enter your full name"
+                                    placeholder="👤 Enter your full name"
                                     className="form-input"
                                     required
                                 />
@@ -254,14 +257,13 @@ const Register = () => {
                                 Email Address
                             </label>
                             <div className="input-container">
-                                <Mail className="input-icon" />
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={(e) => handleInputChange('email', e.target.value)}
-                                    placeholder="Enter your email"
+                                    placeholder="📧 Enter your email"
                                     className="form-input"
                                     required
                                 />
@@ -277,14 +279,13 @@ const Register = () => {
                                 Phone Number
                             </label>
                             <div className="input-container">
-                                <Phone className="input-icon" />
                                 <input
                                     type="tel"
                                     id="phone"
                                     name="phone"
                                     value={formData.phone}
                                     onChange={(e) => handleInputChange('phone', e.target.value)}
-                                    placeholder="Enter your phone number"
+                                    placeholder="📞 Enter your phone number"
                                     className="form-input"
                                     required
                                 />
@@ -300,14 +301,13 @@ const Register = () => {
                                 Password
                             </label>
                             <div className="input-container">
-                                <Lock className="input-icon" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     id="password"
                                     name="password"
                                     value={formData.password}
                                     onChange={(e) => handleInputChange('password', e.target.value)}
-                                    placeholder="Create a password"
+                                    placeholder="🔒 Create a password"
                                     className="form-input password-input"
                                     required
                                 />
@@ -330,14 +330,13 @@ const Register = () => {
                                 Confirm Password
                             </label>
                             <div className="input-container">
-                                <Lock className="input-icon" />
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
                                     onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                                    placeholder="Confirm your password"
+                                    placeholder="🔒 Confirm your password"
                                     className="form-input password-input"
                                     required
                                 />

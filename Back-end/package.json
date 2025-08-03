@@ -7,7 +7,7 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.ts"
   },
   "dependencies": {
     "body-parser": "^2.2.0",

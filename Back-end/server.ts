@@ -3,11 +3,13 @@ import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
 import { CONNECT } from "./config/config";
+import { initUserRoute } from "./route/userRoute"
 const app = express();
 const PORT = 3000;
 const startServr = async () => {
     try {
         await CONNECT();
+        app.use(bodyParser.json());
         app.use(cors(
             {
                 origin: "http://localhost:5173",
@@ -17,7 +19,7 @@ const startServr = async () => {
                 allowedHeaders: ["Content-Type", "Authorization"],
             }
         ));
-        app.use(bodyParser.json());
+        app.use("/register", initUserRoute());
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         })
