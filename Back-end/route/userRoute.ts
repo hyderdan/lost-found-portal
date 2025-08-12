@@ -10,6 +10,7 @@ const initUserRoute = () => {
     userRouter.use(bodyParser.urlencoded({ extended: true }));
 
     userRouter.post('/signUp', controll.registerUser);
+    userRouter.post('/login',controll.loginUser)
 
 
     return userRouter;

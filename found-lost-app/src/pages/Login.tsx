@@ -2,24 +2,45 @@ import { Link } from 'react-router-dom';
 import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import './styles/login.css'; 
+import './styles/login.css';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 const Login = () => {
-    const Nav = useNavigate();      
+    const Nav = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
-     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Login submitted:', formData);
-    // Handle login logic
-    Nav('/');
-  };
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post("http://localhost:3000/register/login", {
+                email: formData.email,
+                password: formData.password
+            });
+            toast.success(response.data.message);
+            if (response.data.message === "LoggeD") {
+                alert("Login successful");
+                Nav('/');
+            }else{
+                alert("Login failed, please try again");
+            }
+          
+
+
+        } catch (error) {
+            alert("Invalid email or password");
+        }
+       
+
+        // Handle login logic
+    };
     return (
         <div className="page-container">
             <div className="form-wrapper">
@@ -110,7 +131,7 @@ const Login = () => {
                     {/* Divider */}
                     <div className="divider">
                         <div className="divider-line" />
-                        <div  className="divider-text">
+                        <div className="divider-text">
                             <span>Don't have an account?</span>
                         </div>
                     </div>
