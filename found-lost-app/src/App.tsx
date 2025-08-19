@@ -11,7 +11,9 @@ import Register from './pages/Register'
 import Viewdetails from './pages/Viewdetails'
 import Admin from './pages/Admin'
 import Pagetransition from './components/Pagetransition'
+import ProtectRoute from './components/ProtectRoute'
 // import ScrollToTop from './hooks/ScrollTop'
+
 
 function App() {
 
@@ -21,16 +23,16 @@ function App() {
       <div className='min-h-screen '>
         <Navigation />
         <Pagetransition>
-          <Routes>
-            <Route path='/' element={<Home />} />
-            <Route path='/Dashboard' element={<Dashboard />} />
-            <Route path='/searchItems' element={<Search />} />
-            <Route path='/postItem' element={<PostItem />} />
+            <Routes>
+            <Route path='/' element={<ProtectRoute><Home /></ProtectRoute>} />
+            <Route path='/Dashboard' element={<ProtectRoute><Dashboard /></ProtectRoute>} />
+            <Route path='/searchItems' element={<ProtectRoute><Search /></ProtectRoute>} />
+            <Route path='/postItem' element={<ProtectRoute><PostItem /></ProtectRoute>} />
+            <Route path='/viewDetails/:id' element={<ProtectRoute><Viewdetails /></ProtectRoute>} />
+            <Route path='/admin' element={<ProtectRoute><Admin /></ProtectRoute>} />
             <Route path='/login' element={<Login />} />
-            <Route path='/viewDetails/:id' element={<Viewdetails />} />
             <Route path='/register' element={<Register />} />
-            <Route path='/admin' element={<Admin />} />
-          </Routes>
+            </Routes>
         </Pagetransition>
       </div>
     </BrowserRouter>
