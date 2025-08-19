@@ -25,19 +25,25 @@ const Login = () => {
                 password: formData.password
             });
             toast.success(response.data.message);
-            if (response.data.message === "LoggeD") {
+            const user = response.data.user;
+            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('isLoggedIn', 'true');
+            sessionStorage.setItem('userId', user._id);
+
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+            if (isLoggedIn === 'true') {
                 alert("Login successful");
                 Nav('/');
-            }else{
+            } else {
                 alert("Login failed, please try again");
             }
-          
+
 
 
         } catch (error) {
             alert("Invalid email or password");
         }
-       
+
 
         // Handle login logic
     };

@@ -28,7 +28,7 @@ const userController = () => {
                     return res.status(401).json({ message: "Invalid password" });
                 }
                 if (user && user.password === password) {
-                    res.status(200).json({ message: "LoggeD", });
+                    res.status(200).json({ message: "Logged in successfully", user });
                     console.log("User logged in successfully :", user);
                 }
 

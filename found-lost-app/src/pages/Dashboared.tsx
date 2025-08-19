@@ -1,7 +1,8 @@
 // import React from "react";
-import { Plus, Search, Eye, Edit, Trash2, MessageCircle } from 'lucide-react';
+import { Plus, Search, Eye, Edit, Trash2, MessageCircle, Calendar, MapPin, Mail, User, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import "./styles/dashboard.css"; // Assuming you have a CSS file for styles
+import { useState } from 'react';
 
 
 const Dashboard = () => {
@@ -43,6 +44,31 @@ const Dashboard = () => {
             isActive: false
         }
     ]
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [editedProfile, setEditedProfile] = useState({
+        name: 'John Doe',
+        email: 'john.doe@example.com',
+        location: 'New York, NY'
+    });
+
+    // Get user profile from sessionStorage or use default values
+    const userProfile = () => {
+        const stored = sessionStorage.getItem('user');
+      console.log("Stored user profile:", stored);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+       
+        
+    };
+    userProfile();
+
+    const handleSaveProfile = () => {
+        // Here you would typically save to a database
+        console.log('Saving profile:', editedProfile);
+        setIsEditDialogOpen(false);
+    };
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-content">
@@ -51,7 +77,107 @@ const Dashboard = () => {
                     <h1 className="dashboard-title">My Dashboard</h1>
                     <p className="dashboard-subtitle">Manage your lost and found posts</p>
                 </div>
+                {/* User Profile Info */}
+                <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-xl font-semibold text-gray-900">Profile Information</h2>
+                        <button
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center"
+                            onClick={() => setIsEditDialogOpen(true)}
+                        >
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Profile
+                        </button>
+                        {/* {isEditDialogOpen && (
+                            <div className="dialog-backdrop">
+                                <div className="dialog-modal sm:max-w-md">
+                                    <div className="dialog-header">
+                                        <h3>Edit Profile Information</h3>
+                                    </div>
+                                    <div className="space-y-4 py-4">
+                                        <div className="space-y-2">
+                                            <label htmlFor="name">Full Name</label>
+                                            <input
+                                                id="name"
+                                                value={editedProfile.name}
+                                                onChange={(e) => setEditedProfile({ ...editedProfile, name: e.target.value })}
+                                                placeholder="Enter your full name"
+                                                className="input"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="email">Email</label>
+                                            <input
+                                                id="email"
+                                                type="email"
+                                                value={editedProfile.email}
+                                                onChange={(e) => setEditedProfile({ ...editedProfile, email: e.target.value })}
+                                                placeholder="Enter your email"
+                                                className="input"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <label htmlFor="location">Location</label>
+                                            <input
+                                                id="location"
+                                                value={editedProfile.location}
+                                                onChange={(e) => setEditedProfile({ ...editedProfile, location: e.target.value })}
+                                                placeholder="Enter your location"
+                                                className="input"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-end space-x-2">
+                                        <button className="btn-outline" onClick={() => setIsEditDialogOpen(false)}>
+                                            Cancel
+                                        </button>
+                                        <button className="btn-primary" onClick={handleSaveProfile}>
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )} */}
+                    </div>
+                    <div className="flex items-center space-x-8">
+                        {/* <img
+                            src={userProfile.avatar}
+                            alt="Profile"
+                            className="w-16 h-16 rounded-full object-cover"
+                        /> */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1">
+                            <div className="flex items-center space-x-3">
+                                <div className="bg-blue-100 p-2 rounded-full">
+                                    <User className="h-5 w-5 text-blue-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Full Name</p>
+                                    <p className="text-gray-900 font-semibold">{userProfile.name}</p>
+                                </div>
+                            </div>
 
+                            <div className="flex items-center space-x-3">
+                                <div className="bg-green-100 p-2 rounded-full">
+                                    <Mail className="h-5 w-5 text-green-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Email</p>
+                                    <p className="text-gray-900 font-semibold">{userProfile.email}</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center space-x-3">
+                                <div className="bg-purple-100 p-2 rounded-full">
+                                    <MapPin className="h-5 w-5 text-purple-600" />
+                                </div>
+                                <div>
+                                    <p className="text-sm font-medium text-gray-600">Location</p>
+                                    <p className="text-gray-900 font-semibold">{userProfile.location}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 {/* Stats Cards */}
                 <div className="stats-grid">
                     <div className="stats-card">
