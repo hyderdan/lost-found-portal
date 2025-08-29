@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from "axios"; // Ensure this is imported at the top
 import { Link } from 'react-router-dom';
-import { UserPlus, Mail, Lock, Eye, EyeOff, User, Phone } from 'lucide-react';
+import { UserPlus,  Eye, EyeOff, User } from 'lucide-react';
 // import { Input } from '@/components/ui/input';
 // import { Button } from '@/components/ui/button';
 // import { Checkbox } from '@/components/ui/checkbox';
@@ -195,7 +195,7 @@ const Register = () => {
                 PhoneNo: formData.phone,
                 password: formData.password
             };
-            const response = await axios.post('http://localhost:3000/register/signUp', PostingData);
+            const response = await axios.post('https://lost-found-portal-podr.onrender.com/register/signUp', PostingData);
             toast.success("Registration Successful! Your account has been registered.", response.data.message);
             // Reset form
             setFormData({

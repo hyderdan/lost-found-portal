@@ -4,7 +4,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectRoute = ({ children }: { children: React.ReactNode }) => {
-    const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = sessionStorage.getItem('userId') !== null ;
     return isLoggedIn ? children : <Navigate to="/login" replace />;
 };
 

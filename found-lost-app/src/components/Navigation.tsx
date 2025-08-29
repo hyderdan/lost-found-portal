@@ -54,11 +54,24 @@ const Navigation = () => {
                         </Link>
                     </div>
 
-                    <div className="login-container">
-                        <Link to="/login" className="login-link">
-                            <LogIn className="icon" />
-                            Login
-                        </Link>
+                     <div className="login-container">
+                        {sessionStorage.getItem('userId') ? (
+                            <button
+                                className="login-link"
+                                onClick={() => {
+                                    sessionStorage.removeItem('userId');
+                                    window.location.reload();
+                                }}
+                            >
+                                <LogIn className="icon" />
+                                Logout
+                            </button>
+                        ) : (
+                            <Link to="/login" className="login-link">
+                                <LogIn className="icon" />
+                                Login
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
