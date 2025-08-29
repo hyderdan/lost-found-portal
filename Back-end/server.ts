@@ -5,7 +5,11 @@ import cors from "cors";
 import { CONNECT } from "./config/config";
 import { initUserRoute } from "./route/userRoute"
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 const startServr = async () => {
     try {
         await CONNECT();
