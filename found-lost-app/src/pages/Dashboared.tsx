@@ -36,7 +36,7 @@ const Dashboard = () => {
                 return;
             }
 
-            const response = await axios.get(`https://lost-found-portal-podr.onrender.com/register/getAllUsers/${userId}`);
+            const response = await axios.get(`http://localhost:3000/register/getAllUsers/${userId}`);
             setUser(response.data.findUser); // Make sure findUser is a user object
             // If you want to see the updated user, use useEffect to log it
         } catch (error) {
@@ -87,7 +87,7 @@ const Dashboard = () => {
                 console.error("User ID not found in sessionStorage");
                 return;
             }
-            const response = await axios.put('https://lost-found-portal-podr.onrender.com/register/updateProfile', {
+            const response = await axios.put('http://localhost:3000/register/updateProfile', {
                 userId: userId,
                 Fullname: editedProfile.name,
                 email: editedProfile.email,

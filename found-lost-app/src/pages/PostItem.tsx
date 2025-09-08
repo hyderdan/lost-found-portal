@@ -1,8 +1,9 @@
-import { Upload, MapPin, Calendar, Tag } from 'lucide-react';
-import { useState } from 'react';
+import { Upload, MapPin, Calendar, Tag, Camera } from 'lucide-react';
+import { useState, useRef } from 'react';
 import './styles/postItem.css';
 import '../hooks/ScrollTop';
 import ScrollToTop from '../hooks/ScrollTop';
+import axios from 'axios';
 const PostItem = () => {
     const [itemType, setItemType] = useState<'lost' | 'found'>('lost');
     const [formData, setFormData] = useState({
@@ -11,8 +12,10 @@ const PostItem = () => {
         category: '',
         location: '',
         date: '',
+        image: '',
         contactInfo: ''
     });
+    
 
     const categories = [
         'Electronics',
@@ -30,24 +33,66 @@ const PostItem = () => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleGetCurrentLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+
+                    // Save into formData
+                    setFormData((prev) => ({
+                        ...prev,
+                        location: `${latitude}, ${longitude}`, // store as string
+                    }));
+                },
+                (error) => {
+                    console.error("❌ Error getting location:", error);
+                    alert("Unable to fetch location. Please enter manually.");
+                }
+            );
+        } else {
+            alert("Geolocation is not supported in this browser.");
+        }
+    };
+    const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setFormData({ ...formData, image: e.target?.result as string });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form submitted:', { itemType, ...formData });
-        // Handle form submission
-        alert(`Item posted successfully as ${itemType}!`);
+        try {
+            const userId = sessionStorage.getItem('userId');
+            const response = await axios.post("http://localhost:3000/post/postItem", {
+                ...formData,
+                itemType,
+                userId
+            });
+            console.log("Item posted successfully:", response.data);
+        } catch (err) {
+
+            console.error("Error posting item:", err);
+        }
         setFormData({
             title: '',
             description: '',
             category: '',
             location: '',
             date: '',
+            image: '',
             contactInfo: ''
         });
     };
 
     return (
         <div className="p-page-container">
-                    <ScrollToTop/>
+            <ScrollToTop />
             <div className="form-container">
                 {/* Header */}
                 <div className="header">
@@ -151,6 +196,11 @@ const PostItem = () => {
                                     className="form-input"
                                     required
                                 />
+                                <button
+                                    type="button"
+                                    onClick={handleGetCurrentLocation}
+                                    className="px-3 mt-2 py-2 bg-blue-500 text-white rounded-lg"
+                                >Click Here For Get Location</button>
                             </div>
                         </div>
 
@@ -172,25 +222,22 @@ const PostItem = () => {
                         </div>
 
                         {/* Image Upload */}
-                        <div className="form-group">
-                            <label className="form-label">
-                                <Upload className="icon" />
-                                Upload Photos
-                            </label>
-                            <div className="upload-container">
-                                <Upload className="upload-icon" />
-                                <p className="upload-text">
-                                    Drag and drop your images here, or <span>browse</span>
-                                </p>
-                                <p className="upload-hint">PNG, JPG, GIF up to 10MB</p>
-                                <input
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    className="form-input"
-                                />
-                            </div>
-                        </div>
+                     <div className="relative ">
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleAvatarChange}
+                                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                                    id="avatar-upload"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="border border-gray-300 hover:bg-gray-50 px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center"
+                                                >
+                                                    <Camera className="h-4 w-4 mr-2" />
+                                                    Uplaod Photo
+                                                </button>
+                                            </div>
 
                         {/* Contact Information */}
                         <div className="form-group">

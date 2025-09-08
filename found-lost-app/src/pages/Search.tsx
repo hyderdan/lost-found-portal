@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search as SearchIcon, Filter, } from 'lucide-react';
 import "./styles/search.css";
 import Itemcard from "../components/Itemcard";
 import ScrollToTop from "../hooks/ScrollTop";
+import axios from "axios";
 
 
 const Search = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedStatus, setSelectedStatus] = useState('all');
+    const [results, setResults] = useState<any[]>([]);
+
 
     const categories = [
         'All Categories',
@@ -22,78 +25,31 @@ const Search = () => {
         'Sports Equipment',
         'Other'
     ];
-    type ItemStatus = "lost" | "found";
+    // type ItemStatus = "lost" | "found";
 
-    const sampleResults: Array<{
-        id: string;
-        title: string;
-        description: string;
-        location: string;
-        date: string;
-        category: string;
-        status: ItemStatus;
-        imageUrl?: string;
-    }> = [
-            {
-                id: '1',
-                title: 'iPhone 14 Pro',
-                description: 'Black iPhone 14 Pro with a blue case. Lost near the university campus.',
-                location: 'University Campus',
-                date: '2024-06-20',
-                category: 'Electronics',
-                status: 'lost',
-                imageUrl: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400'
-            },
-            {
-                id: '2',
-                title: 'Brown Leather Wallet',
-                description: 'Found a brown leather wallet with some cards inside. No cash.',
-                location: 'Downtown Park',
-                date: '2024-06-19',
-                category: 'Personal Items',
-                status: 'found'
-            },
-            {
-                id: '3',
-                title: 'Blue Backpack',
-                description: 'Navy blue backpack with laptop compartment. Contains textbooks.',
-                location: 'City Library',
-                date: '2024-06-18',
-                category: 'Bags',
-                status: 'lost'
-            },
-            {
-                id: '4',
-                title: 'AirPods Pro',
-                description: 'White AirPods Pro in charging case. Found at coffee shop.',
-                location: 'Central Coffee Shop',
-                date: '2024-06-17',
-                category: 'Electronics',
-                status: 'found'
-            },
-            {
-                id: '5',
-                title: 'Red Baseball Cap',
-                description: 'Red baseball cap with team logo. Lost during jogging.',
-                location: 'Riverside Trail',
-                date: '2024-06-16',
-                category: 'Clothing',
-                status: 'lost'
-            },
-            {
-                id: '6',
-                title: 'Car Keys',
-                description: 'Toyota car keys with blue keychain. Found in parking lot.',
-                location: 'Shopping Mall',
-                date: '2024-06-15',
-                category: 'Keys',
-                status: 'found'
-            }
-        ]
-    const filteredResults = sampleResults.filter(item =>
-        (selectedStatus === 'all' || item.status === selectedStatus) &&
-        (selectedCategory === 'all' || item.category === selectedCategory)
-    );
+    useEffect(() => {
+        fetchItems();
+    }, [searchQuery, selectedCategory, selectedStatus]);
+
+    const fetchItems = async () => {
+        try {
+            const res = await axios.get("http://localhost:5000/api/items", {
+                params: {
+                    search: searchQuery,
+                    category: selectedCategory,
+                    status: selectedStatus,
+                },
+            });
+            setResults(res.data);
+        } catch (error) {
+            console.error("Error fetching items", error);
+        }
+    };
+    
+    // const filteredResults = sampleResults.filter(item =>
+    //     (selectedStatus === 'all' || item.status === selectedStatus) &&
+    //     (selectedCategory === 'all' || item.category === selectedCategory)
+    // );
 
 
     return (
@@ -165,14 +121,14 @@ const Search = () => {
                     {/* Results Count */}
                     <div className="results-count">
                         <p>
-                            Showing {filteredResults.length} results
+                            Showing {results.length} results
                             {searchQuery && ` for "${searchQuery}"`}
                         </p>
                     </div>
 
                     {/* Results Grid */}
                     <div className="results-grid">
-                        {filteredResults.map((item) => (
+                        {results.map((item) => (
                             <Itemcard
                                 key={item.id}
                                 id={item.id}
@@ -181,8 +137,8 @@ const Search = () => {
                                 location={item.location}
                                 date={item.date}
                                 category={item.category}
-                                status={item.status}
-                                imageUrl={item.imageUrl}
+                                status={item.itemType}
+                                imageUrl={item.image}
                             />
                         ))}
                     </div>
@@ -195,7 +151,7 @@ const Search = () => {
                     </div>
 
                     {/* No Results State */}
-                    {sampleResults.length === 0 && (
+                    {results.length === 0 && (
                         <div className="no-results-container">
                             <SearchIcon className="no-results-icon" />
                             <h3 className="no-results-title">No items found</h3>
