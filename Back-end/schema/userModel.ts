@@ -9,9 +9,14 @@ const userSchema = new mongoose.Schema({
   postedDatas: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }]
 });
 const postSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  location: String
+  itemType: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  category: { type: String, required: true },
+  location: { type: String, required: true },
+  date: { type: Date, required: true },
+  image: { type: String, required: true },
+  contactInfo: { type: String, required: true }
 })
 
 

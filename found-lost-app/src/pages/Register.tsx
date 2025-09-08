@@ -195,7 +195,7 @@ const Register = () => {
                 PhoneNo: formData.phone,
                 password: formData.password
             };
-            const response = await axios.post('https://lost-found-portal-podr.onrender.com/register/signUp', PostingData);
+            const response = await axios.post('http://localhost:3000/register/signUp', PostingData);
             toast.success("Registration Successful! Your account has been registered.", response.data.message);
             // Reset form
             setFormData({

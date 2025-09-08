@@ -22,7 +22,7 @@ function App() {
       {/* <ScrollToTop/> */}
       <div className='min-h-screen '>
         <Navigation />
-        <Pagetransition>
+        {/* <Pagetransition> */}
             <Routes>
             <Route path='/' element={<ProtectRoute><Home /></ProtectRoute>} />
             <Route path='/Dashboard' element={<ProtectRoute><Dashboard /></ProtectRoute>} />
@@ -33,7 +33,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             </Routes>
-        </Pagetransition>
+        {/* </Pagetransition> */}
       </div>
     </BrowserRouter>
 
