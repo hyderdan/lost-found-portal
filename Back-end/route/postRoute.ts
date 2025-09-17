@@ -11,7 +11,7 @@ const initpostRoute = () => {
 
 
     postrouter.post('/postItem', controll.createPost);
-
+    postrouter.get('/getPosts', controll.getPosts);
     return  postrouter ;
 }
 

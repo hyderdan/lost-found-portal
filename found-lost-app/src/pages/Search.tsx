@@ -32,15 +32,11 @@ const Search = () => {
     }, [searchQuery, selectedCategory, selectedStatus]);
 
     const fetchItems = async () => {
+       const userID = sessionStorage.getItem("userId") ;
         try {
-            const res = await axios.get("http://localhost:5000/api/items", {
-                params: {
-                    search: searchQuery,
-                    category: selectedCategory,
-                    status: selectedStatus,
-                },
-            });
+            const res = await axios.get("http://localhost:3000/post/getPosts");
             setResults(res.data);
+            console.log("Fetched items:", res.data);
         } catch (error) {
             console.error("Error fetching items", error);
         }
@@ -79,7 +75,7 @@ const Search = () => {
                                     />
                                 </div>
                             </div>
-
+                            <button onClick={fetchItems}>Search</button>
                             {/* Category Filter */}
                             <div>
                                 <select
