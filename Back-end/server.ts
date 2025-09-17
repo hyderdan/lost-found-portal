@@ -23,6 +23,7 @@ const startServr = async () => {
                 preflightContinue: false,
                 optionsSuccessStatus: 204,
                 allowedHeaders: ["Content-Type", "Authorization"],
+                credentials: true
             }
         ));
         app.use("/register", initUserRoute());
