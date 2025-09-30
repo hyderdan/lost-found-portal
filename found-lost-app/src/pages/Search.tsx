@@ -11,6 +11,8 @@ const Search = () => {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [selectedStatus, setSelectedStatus] = useState('all');
     const [results, setResults] = useState<any[]>([]);
+    const [loading, setLoading] = useState<number>(10);
+
 
 
     const categories = [
@@ -26,13 +28,16 @@ const Search = () => {
         'Other'
     ];
     // type ItemStatus = "lost" | "found";
+    useEffect(() => {
+        fetchItems();
+    }, []);
 
     useEffect(() => {
         fetchItems();
     }, [searchQuery, selectedCategory, selectedStatus]);
 
     const fetchItems = async () => {
-       const userID = sessionStorage.getItem("userId") ;
+        const userID = sessionStorage.getItem("userId");
         try {
             const res = await axios.get("http://localhost:3000/post/getPosts");
             setResults(res.data);
@@ -41,17 +46,20 @@ const Search = () => {
             console.error("Error fetching items", error);
         }
     };
-    
-    // const filteredResults = sampleResults.filter(item =>
-    //     (selectedStatus === 'all' || item.status === selectedStatus) &&
-    //     (selectedCategory === 'all' || item.category === selectedCategory)
-    // );
 
+    const filteredResults = results.filter(item =>
+        (selectedStatus === 'all' || item.itemType === selectedStatus) &&
+        (selectedCategory === 'all' || item.category === selectedCategory) &&
+        (searchQuery === '' || item.title.toLowerCase().startsWith(searchQuery.toLowerCase()))
+    );
+    const handleLoadMore = () => {
+        setLoading((prev) => prev + 10);
+    };
 
     return (
         <div>
             <ScrollToTop />
-            <div className="container">
+            <div className="Scontainer">
                 <div className="main-content">
                     {/* Header */}
                     <div className="header">
@@ -75,7 +83,6 @@ const Search = () => {
                                     />
                                 </div>
                             </div>
-                            <button onClick={fetchItems}>Search</button>
                             {/* Category Filter */}
                             <div>
                                 <select
@@ -124,7 +131,7 @@ const Search = () => {
 
                     {/* Results Grid */}
                     <div className="results-grid">
-                        {results.map((item) => (
+                        {filteredResults.slice(0, loading).map((item) => (
                             <Itemcard
                                 key={item.id}
                                 id={item.id}
@@ -140,11 +147,19 @@ const Search = () => {
                     </div>
 
                     {/* Load More */}
-                    <div className="load-more-container">
-                        <button className="load-more-button">
-                            Load More Results
-                        </button>
-                    </div>
+                    {filteredResults.length > 10 && filteredResults.length > loading && (
+                        <div className="load-more-container">
+                            <button className="load-more-button" onClick={() => {
+                                setSearchQuery("");
+                                setSelectedCategory("all");
+                                setSelectedStatus("all");
+                                handleLoadMore();
+                            }}>
+                                Load More Results
+                            </button>
+                        </div>
+                    )}
+
 
                     {/* No Results State */}
                     {results.length === 0 && (

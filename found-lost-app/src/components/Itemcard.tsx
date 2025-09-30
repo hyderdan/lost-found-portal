@@ -6,7 +6,7 @@ interface ItemCardProps {
     id: string;
     title: string;
     description: string;
-    location: string;
+    location: number;
     date: string;
     category: string;
     status: 'found' | 'lost';
