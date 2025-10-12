@@ -12,6 +12,8 @@ const initpostRoute = () => {
 
     postrouter.post('/postItem', controll.createPost);
     postrouter.get('/getPosts', controll.getPosts);
+    postrouter.delete('/deletePost',controll.deletePost);
+
     return  postrouter ;
 }
 

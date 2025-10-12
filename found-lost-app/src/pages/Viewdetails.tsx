@@ -1,298 +1,181 @@
-// import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { MapPin, Calendar, User, Phone, Mail, ArrowLeft, Flag } from 'lucide-react';
-import './styles/viewDetails.css'; // Assuming you have a CSS file for styles
+import { useEffect, useState } from 'react';
+import { MapPin, Calendar, User, Phone, ArrowLeft, Flag, Mail } from 'lucide-react';
+import axios from "axios";
 
-const Viewdetails = () => {
-    const { id } = useParams();
-    const sampleItems = [
-        {
-            id: '1',
-            title: 'iPhone 14 Pro',
-            description: 'Black iPhone 14 Pro with a blue case. Lost near the university campus.',
-            location: 'https://maps.google.com/maps?hl=en&gl=in&um=1&ie=UTF-8&fb=1&sa=X&ftid=0x3b080db504444075:0x8cf7531f9e8b202f',
-            date: '2024-06-20',
-            category: 'Electronics',
-            status: 'lost' as const,
-            imageUrl: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=400',
-            contactInfo: {
-                name: 'John Smith',
-                phone: '+1 (555) 123-4567',
-                email: 'john.smith@email.com'
-            },
-            additionalDetails: {
-                reward: '$100',
-                lastSeen: '2:30 PM near the university campus',
-                brand: 'Apple',
-                model: 'iPhone 14 Pro',
-                color: 'Black'
-            }
-        },
-        {
-            id: '2',
-            title: 'Brown Leather Wallet',
-            description: 'Found a brown leather wallet with some cards inside. No cash.',
-            location: 'https://maps.google.com/maps?hl=en&gl=in&um=1&ie=UTF-8&fb=1&sa=X&ftid=0x3b080db504444075:0x8cf7531f9e8b202f',
-            date: '2024-06-19',
-            category: 'Personal Items',
-            status: 'found' as const,
-            contactInfo: {
-                name: 'Sarah Johnson',
-                phone: '+1 (555) 987-6543',
-                email: 'sarah.j@email.com'
-            },
-            additionalDetails: {
-                reward: 'No reward',
-                lastSeen: '5:00 PM at the park bench',
-                brand: 'Generic',
-                model: 'Leather Wallet',
-                color: 'Brown'
-            }
-        },
-        {
-            id: '3',
-            title: 'Blue Backpack',
-            description: 'Navy blue backpack with laptop compartment. Contains textbooks.',
-            location: 'City Library',
-            date: '2024-06-18',
-            category: 'Bags',
-            status: 'lost' as const,
-            contactInfo: {
-                name: 'Mike Wilson',
-                phone: '+1 (555) 456-7890',
-                email: 'mike.w@email.com'
-            },
-            additionalDetails: {
-                reward: '$50',
-                lastSeen: '3:00 PM in the study area',
-                brand: 'JanSport',
-                model: 'SuperBreak',
-                color: 'Navy Blue'
-            }
-        },
-        {
-            id: '4',
-            title: 'AirPods Pro',
-            description: 'White AirPods Pro in charging case. Found at coffee shop.',
-            location: 'Central Coffee Shop',
-            date: '2024-06-17',
-            category: 'Electronics',
-            status: 'found' as const,
-            contactInfo: {
-                name: 'Emma Davis',
-                phone: '+1 (555) 234-5678',
-                email: 'emma.d@email.com'
-            },
-            additionalDetails: {
-                reward: 'No reward',
-                lastSeen: '10:00 AM at the counter',
-                brand: 'Apple',
-                model: 'AirPods Pro',
-                color: 'White'
-            }
-        },
-        {
-            id: '5',
-            title: 'Red Baseball Cap',
-            description: 'Red baseball cap with team logo. Lost during jogging.',
-            location: 'Riverside Trail',
-            date: '2024-06-16',
-            category: 'Clothing',
-            status: 'lost' as const,
-            contactInfo: {
-                name: 'Tom Anderson',
-                phone: '+1 (555) 345-6789',
-                email: 'tom.a@email.com'
-            },
-            additionalDetails: {
-                reward: '$25',
-                lastSeen: '7:00 AM during morning jog',
-                brand: 'Nike',
-                model: 'Baseball Cap',
-                color: 'Red'
-            }
-        },
-        {
-            id: '6',
-            title: 'Car Keys',
-            description: 'Toyota car keys with blue keychain. Found in parking lot.',
-            location: 'Shopping Mall',
-            date: '2024-06-15',
-            category: 'Keys',
-            status: 'found' as const,
-            contactInfo: {
-                name: 'Lisa Brown',
-                phone: '+1 (555) 567-8901',
-                email: 'lisa.b@email.com'
-            },
-            additionalDetails: {
-                reward: 'No reward',
-                lastSeen: '4:00 PM in parking lot section B',
-                brand: 'Toyota',
-                model: 'Car Keys',
-                color: 'Blue Keychain'
-            }
-        }
-    ];
+type ItemType = {
+  _id: string;
+  title?: string;
+  image?: string;
+  itemType?: string;
+  category?: string;
+  date?: string;
+  description?: string;
+  location?: string;
+  contactInfo?: string;
+};
 
-    // Find the item with the matching ID
-    const itemData = sampleItems.find(item => item.id === id);
+const ViewDetail = () => {
+  const { id } = useParams();
+  const [data, setData] = useState<ItemType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/post/getPosts");
+        setData(res.data);
+      } catch (error) {
+        console.error("Error fetching items", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchItems();
+  }, [id]);
+
+  const itemData = data.find(item => item._id === id);
+
+  if (loading) {
     return (
-        <>
-            {!itemData ? (
-                <div className="page-container">
-                    <div className="content-container">
-                        <div className="back-button-container">
-                            <Link
-                                to="/search"
-                                className="back-button"
-                            >
-                                <ArrowLeft className="icon" />
-                                {/* Back to Search */}
-                            </Link>
-                        </div>
-                        <div className="not-found-card">
-                            <h1 className="not-found-title">Item Not Found</h1>
-                            <p className="not-found-description">The item you're looking for doesn't exist.</p>
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="page-container">
-                    <div className="content-container">
-                        {/* Back Button */}
-                        <div className="back-button-container">
-                            <Link
-                                to="/searchItems"
-                                className="back-button"
-                            >
-                                <ArrowLeft className="icon" />
-                                {/* Back to Search */}
-                            </Link>
-                        </div>
-
-                        <div className="item-card">
-                            {/* Header */}
-                            <div className="image-container">
-                                {itemData?.imageUrl ? (
-                                    <img
-                                        src={itemData?.imageUrl}
-                                        alt={itemData?.title}
-                                        className="item-image"
-                                    />
-                                ) : (
-                                    <div className="no-image">
-                                        <span className="no-image-text">No Image Available</span>
-                                    </div>
-                                )}
-                                <div className={`status-badge ${itemData?.status === 'lost' ? 'status-lost' : 'status-found'}`}>
-                                    {itemData?.status === 'lost' ? 'Lost Item' : 'Found Item'}
-                                </div>
-                            </div>
-
-                            <div className="item-content">
-                                {/* Title and Category */}
-                                <div className="header-section">
-                                    <div>
-                                        <h1 className="item-title">{itemData?.title}</h1>
-                                        <span className="category-badge">{itemData?.category}</span>
-                                    </div>
-                                    <button className="report-button">
-                                        <Flag className="icon" />
-                                        Report Issue
-                                    </button>
-                                </div>
-
-                                {/* Basic Info */}
-                                <div className="basic-info">
-                                    {/* <div className="info-item">
-                                        <MapPin className="icon" />
-                                        <span>{itemData?.location}</span>
-                                    </div> */}
-                                    <div className="info-item">
-                                        <Calendar className="icon" />
-                                        <span>{itemData?.date}</span>
-                                    </div>
-                                </div>
-
-                                {/* Description */}
-                                <div className="description-section">
-                                    <h2 className="description-title">Description</h2>
-                                    <p className="description-text">{itemData?.description}</p>
-                                </div>
-
-                                {/* Additional Details */}
-                                <div className="additional-details">
-                                    <h2 className="additional-details-title">Additional Details</h2>
-                                    <div className="details-grid">
-                                        <div className="detail-item">
-                                            <span className="detail-label">Brand:</span>
-                                            <span className="detail-value">{itemData?.additionalDetails?.brand}</span>
-                                        </div>
-                                        <div className="detail-item">
-                                            <span className="detail-label">Model:</span>
-                                            <span className="detail-value">{itemData?.additionalDetails?.model}</span>
-                                        </div>
-                                        <div className="detail-item">
-                                            <span className="detail-label">Color:</span>
-                                            <span className="detail-value">{itemData?.additionalDetails?.color}</span>
-                                        </div>
-                                        <div className="detail-item">
-                                            <span className="detail-label">Reward:</span>
-                                            <span className={`detail-value-reward ${itemData?.additionalDetails?.reward === 'No reward' ? 'detail-value-reward-no' : 'detail-value-reward-yes'}`}>
-                                                {itemData?.additionalDetails?.reward}
-                                            </span>
-                                        </div>
-                                        <div className="detail-item detail-item-full">
-                                            <span className="detail-label">Last Seen:</span>
-                                            <span className="detail-value">{itemData?.additionalDetails?.lastSeen}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Contact Information */}
-                                <div className="contact-section">
-                                    <h2 className="contact-title">Contact Information</h2>
-                                    <div className="contact-card">
-                                        <div className="contact-name">
-                                            <User className="icon" />
-                                            <span className="contact-name-text">{itemData?.contactInfo?.name}</span>
-                                        </div>
-                                        <div className="contact-info">
-                                            <div className="contact-item">
-                                                <Phone className="icon" />
-                                                <a href={`tel:${itemData?.contactInfo?.phone}`} className="contact-link">
-                                                    {itemData?.contactInfo?.phone}
-                                                </a>
-                                            </div>
-                                            <div className="contact-item">
-                                                <Mail className="icon" />
-                                                <a href={`mailto:${itemData?.contactInfo?.email}`} className="contact-link">
-                                                    {itemData?.contactInfo?.email}
-                                                </a>
-                                            </div>
-                                             <div className="contact-item">
-                                                <MapPin className="icon" />
-                                                <a href={`${itemData?.location}`} className="contact-link">
-                                                </a>
-                                            </div>
-                                        </div>
-                                        <div className="contact-buttons">
-                                            <button className="contact-button contact-button-primary">
-                                                Contact Owner
-                                            </button>
-                                            <button className="contact-button contact-button-secondary">
-                                                Send Message
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </>
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block animate-spin w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full mb-4"></div>
+          <h1 className="text-2xl font-semibold text-gray-600">Loading...</h1>
+        </div>
+      </div>
     );
-}
-export default Viewdetails;
+  }
+
+  if (!itemData) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-8">
+        <Link 
+          to="/searchItems" 
+          className="mb-6 inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition"
+        >
+          <ArrowLeft className="h-4 w-4" /> Back to Search
+        </Link>
+        <div className="text-center border border-red-300 bg-red-50 rounded-2xl p-10 shadow-md">
+          <Flag className="w-10 h-10 text-red-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Item Not Found</h2>
+          <p className="text-gray-600">The item you’re looking for doesn’t exist.</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white py-12 px-4">
+      <div className="container mx-auto max-w-6xl">
+        {/* Back Button */}
+        <Link
+          to="/searchItems"
+          className="inline-flex items-center gap-3 mb-8 px-6 py-3 rounded-2xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 font-semibold transition-all duration-300 shadow-sm"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Back to Search
+        </Link>
+
+        <div className="grid lg:grid-cols-5 gap-8">
+          {/* Image Section */}
+          <div className="lg:col-span-3 space-y-6">
+            <div className="relative overflow-hidden rounded-3xl bg-blue-50   shadow-lg hover:shadow-xl transition-all duration-500">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100 flex items-center justify-center">
+                {itemData.image ? (
+                  <img
+                    src={itemData.image}
+                    alt={itemData.title}
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="w-24 h-24 rounded-full bg-blue-200 flex items-center justify-center mb-4 shadow-inner">
+                      <MapPin className="w-12 h-12 text-blue-600" />
+                    </div>
+                    <span className="text-gray-500 text-lg font-semibold">
+                      No Image Available
+                    </span>
+                  </div>
+                )}
+
+                {/* Status Badge – now always visible */}
+                <div className="absolute top-6 right-6">
+                  <div
+                    className={`px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg border transition-all duration-300 ${
+                      itemData.itemType === 'lost'
+                        ? 'bg-red-500 text-white border-red-400'
+                        : 'bg-emerald-500 text-white border-emerald-400'
+                    }`}
+                  >
+                    {itemData.itemType === 'lost' ? '🔍 Lost Item' : '✓ Found Item'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="rounded-3xl bg-blue-50 border border-blue-200 p-8 shadow-md hover:shadow-lg transition-all">
+              <h2 className="text-2xl font-bold text-blue-800 mb-4">📝 Description</h2>
+              <p className="text-gray-700 leading-relaxed text-lg">
+                {itemData.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Details Section */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Header */}
+            <div className="rounded-3xl bg-gray-50 border border-gray-200 p-8 shadow-md hover:shadow-lg transition-all">
+              <h1 className="text-3xl font-extrabold text-blue-700 mb-3">
+                {itemData.title}
+              </h1>
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-500 text-white font-semibold text-sm shadow-md">
+                 {itemData.category}
+              </div>
+
+              <div className="mt-6 space-y-3">
+                <div className="flex items-center gap-3 p-4 bg-white border border-blue-200 rounded-xl hover:border-blue-400 transition-all">
+                  <MapPin className="text-blue-600 h-5 w-5" />
+                  <span className="text-gray-700 font-semibold">{itemData.location}</span>
+                </div>
+                <div className="flex items-center gap-3 p-4 bg-white border border-gray-200 rounded-xl hover:border-blue-400 transition-all">
+                  <Calendar className="text-purple-600 h-5 w-5" />
+                  <span className="text-gray-700 font-semibold">{itemData.date}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact */}
+            <div className="rounded-3xl bg-blue-50 border border-blue-200 p-8 shadow-md hover:shadow-lg transition-all">
+              <h2 className="text-2xl font-bold text-blue-800 mb-6">📞 Contact</h2>
+
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 p-5 bg-white border border-gray-200 rounded-xl hover:border-blue-400 transition-all">
+                  <User className="text-blue-600 h-5 w-5" />
+                  <span className="text-gray-800 font-semibold text-lg">
+                    {itemData.contactInfo}
+                  </span>
+                </div>
+
+                <a
+                  href={`tel:${itemData.contactInfo}`}
+                  className="flex items-center justify-center w-full py-4 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition-all shadow-md hover:shadow-lg"
+                >
+                  <Phone className="h-5 w-5 mr-2" /> Contact Owner
+                </a>
+
+                <button className="w-full py-4 rounded-xl bg-white border border-gray-300 font-bold text-gray-700 hover:bg-blue-50 transition-all shadow-sm">
+                  <Mail className="h-5 w-5 mr-2 inline" />
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ViewDetail;

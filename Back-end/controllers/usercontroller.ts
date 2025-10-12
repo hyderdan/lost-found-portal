@@ -1,4 +1,4 @@
-import { User } from "../schema/userModel";
+import { Post, User } from "../schema/userModel";
 import { Request, Response } from "express";
 
 const userController = () => {
@@ -9,7 +9,7 @@ const userController = () => {
             const newUser = new User({ Fullname, email, PhoneNo, password });
             await newUser.save();
             res.status(201).json({ message: "User registered successfully", user: newUser });
-            console.log("User registered successfully :", newUser);
+            // console.log("User registered successfully :", newUser);
         } catch (error) {
             console.error("Error registering user:", error);
             res.status(500).json({ message: "Internal server error" });
@@ -29,7 +29,7 @@ const userController = () => {
                 }
                 if (user && user.password === password) {
                     res.status(200).json({ message: "Logged in successfully", user });
-                    console.log("User logged in successfully :", user);
+                    // console.log("User logged in successfully :", user);
                 }
 
             } catch (error) {
@@ -46,7 +46,7 @@ const userController = () => {
                 return res.status(404).json({ message: "User not found" });
             }
             res.status(200).json({ message: "User profile data fetched successfully", findUser });
-            console.log("User profile data fetched successfully :", findUser);
+            // console.log("User profile data fetched successfully :", findUser);
 
         } catch (error) {
             console.error("Error fetching user profile data:", error);
@@ -55,8 +55,8 @@ const userController = () => {
     }
     const updateUserProfile = async (req: Request, res: Response) => {
         try {
-            const { Fullname, email, PhoneNo, password } = req.body;
-            const user = await User.findOne({ email });
+            const { Fullname, email, PhoneNo, password, avatar, userId } = req.body;
+            const user = await User.findById(userId);
 
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
@@ -72,7 +72,10 @@ const userController = () => {
             res.status(500).json({ message: "Internal server error" });
         }
     }
+    // DELETE /post/deletePost/:postId
+    
 
-    return { registerUser, loginUser, loginUserDatas, updateUserProfile };
+
+    return { registerUser, loginUser, loginUserDatas, updateUserProfile,  };
 }
 export { userController };
