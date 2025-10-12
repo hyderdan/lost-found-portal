@@ -1,3 +1,4 @@
+import { stat } from "fs";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -16,7 +17,8 @@ const postSchema = new mongoose.Schema({
   location: { type: String, required: true },
   date: { type: Date, required: true },
   image: { type: String, required: true },
-  contactInfo: { type: String, required: true }
+  contactInfo: { type: String, required: true },
+  status: { type: String, enum: ["active", "resolved"], default: "active" }
 })
 
 

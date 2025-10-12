@@ -50,7 +50,8 @@ const Search = () => {
     const filteredResults = results.filter(item =>
         (selectedStatus === 'all' || item.itemType === selectedStatus) &&
         (selectedCategory === 'all' || item.category === selectedCategory) &&
-        (searchQuery === '' || item.title.toLowerCase().startsWith(searchQuery.toLowerCase()))
+        (searchQuery === '' || item.title.toLowerCase().startsWith(searchQuery.toLowerCase())),
+      
     );
     const handleLoadMore = () => {
         setLoading((prev) => prev + 10);
@@ -134,7 +135,7 @@ const Search = () => {
                         {filteredResults.slice(0, loading).map((item) => (
                             <Itemcard
                                 key={item.id}
-                                id={item.id}
+                                id={item._id}
                                 title={item.title}
                                 description={item.description}
                                 location={item.location}

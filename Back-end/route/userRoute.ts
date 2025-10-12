@@ -12,7 +12,7 @@ const initUserRoute = () => {
     userRouter.post('/signUp', controll.registerUser);
     userRouter.post('/login',controll.loginUser);
     userRouter.get('/getAllUsers/:id',controll.loginUserDatas);
-    userRouter.put('/updateProfile',controll.updateUserProfile);
+    userRouter.post('/updateProfile',controll.updateUserProfile);
 
 
     return userRouter;
